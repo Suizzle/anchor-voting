@@ -7,63 +7,63 @@ declare_id!("6xB7MvgYXXH3FFsrhvoJJu6QqxhLN1yLcUzTAnfnbEzS");
 
 
 #[program]
-pub mod anchor_vote_program_sol_a {
+pub mod anchor_scorekeeper {
     
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>, _url: String) -> Result<()> {
-        ctx.accounts.vote.score = 0;
-        ctx.accounts.vote.bump = ctx.bumps.vote;
+    pub fn initialize(ctx: Context<Initialize>, _user: String) -> Result<()> {
+        ctx.accounts.count.score = 0;
+        ctx.accounts.count.bump = ctx.bumps.count;
         Ok(())
     }
 
-    pub fn upvote(ctx: Context<Vote>, _url: String) -> Result<()> {
-        ctx.accounts.vote.score += 1;
+    pub fn increment(ctx: Context<Count>, _user: String) -> Result<()> {
+        ctx.accounts.count.score += 1;
         Ok(())
     }
 
-    pub fn downvote(ctx: Context<Vote>, _url: String) -> Result<()> {
-        ctx.accounts.vote.score -= 1;
+    pub fn decrement(ctx: Context<Count>, _user: String) -> Result<()> {
+        ctx.accounts.count.score -= 1;
         Ok(())
     }
 }
 
 #[derive(Accounts)]
-#[instruction(_url: String)]
+#[instruction(_user: String)]
 pub struct Initialize<'info> {
     #[account(mut)]
     signer: Signer<'info>,
     #[account(
         init,
         payer = signer,
-        space = VoteState::INIT_SPACE,
-        seeds = [hash(_url.as_bytes()).to_bytes().as_ref()],
+        space = CountState::INIT_SPACE,
+        seeds = [hash(_user.as_bytes()).to_bytes().as_ref()],
         bump
     )]
-    vote: Account<'info, VoteState>,
+    count: Account<'info, CountState>,
     system_program: Program<'info, System>
 }
 
 #[derive(Accounts)]
-#[instruction(_url: String)]
-pub struct Vote<'info> {
+#[instruction(_user: String)]
+pub struct Count<'info> {
     #[account(mut)]
     signer: Signer<'info>,
     #[account(
         mut,
-        seeds = [hash(_url.as_bytes()).to_bytes().as_ref()],
-        bump = vote.bump
+        seeds = [hash(_user.as_bytes()).to_bytes().as_ref()],
+        bump = count.bump
     )]
-    vote: Account<'info, VoteState>,
+    count: Account<'info, CountState>,
     system_program: Program<'info, System>
 }
 
 #[account]
-pub struct VoteState {
+pub struct CountState {
     score: i64,
     bump: u8
 }
 
-impl Space for VoteState {
+impl Space for CountState {
     const INIT_SPACE: usize = 8 + 8 + 1;
 }

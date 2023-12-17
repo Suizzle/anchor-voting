@@ -1,28 +1,28 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { AnchorVoteProgramSolA } from "../target/types/anchor_vote_program_sol_a";
+import { AnchorScorekeeper } from "../target/types/anchor_scorekeeper";
 import { Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram } from "@solana/web3.js";
 import { createHash } from "crypto";
 import wallet from "../wba-wallet.json"
 
 
-describe("anchor-vote-program-sol-a", () => {
+describe("anchor_scorekeeper", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  const program = anchor.workspace.AnchorVoteProgramSolA as Program<AnchorVoteProgramSolA>;
+  const program = anchor.workspace.AnchorScorekeeper as Program<AnchorScorekeeper>;
 
   const provider = anchor.getProvider();
 
   const signer = Keypair.fromSecretKey(new Uint8Array(wallet));
 
-  const site = "netscape.com";
+  const user = "Coq Inu";
 
   const hasher = createHash('sha256');
-  hasher.update(Buffer.from(site));
+  hasher.update(Buffer.from(user));
   const hash = hasher.digest();
 
-  const vote = PublicKey.findProgramAddressSync([hash], program.programId)[0];
+  const count = PublicKey.findProgramAddressSync([hash], program.programId)[0];
 
   const confirm = async (signature: string): Promise<string> => {
     const block = await provider.connection.getLatestBlockhash();
@@ -46,10 +46,10 @@ describe("anchor-vote-program-sol-a", () => {
 
   it("Initialize", async () => {
     const tx = await program.methods
-    .initialize(site)
+    .initialize(user)
     .accounts({
       signer: signer.publicKey,
-      vote,
+      count,
       systemProgram: SystemProgram.programId
     })
     .signers([
@@ -60,12 +60,12 @@ describe("anchor-vote-program-sol-a", () => {
     .then(log);
   });
 
-  it("Upvote", async () => {
+  it("Increment", async () => {
     const tx = await program.methods
-    .upvote(site)
+    .increment(user)
     .accounts({
       signer: signer.publicKey,
-      vote,
+      count,
       systemProgram: SystemProgram.programId
     })
     .signers([
@@ -76,12 +76,12 @@ describe("anchor-vote-program-sol-a", () => {
     .then(log);
   });
 
-  xit("Downvote", async () => {
+  xit("Decrement", async () => {
     const tx = await program.methods
-    .downvote(site)
+    .decrement(user)
     .accounts({
       signer: signer.publicKey,
-      vote,
+      count,
       systemProgram: SystemProgram.programId
     })
     .signers([

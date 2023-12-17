@@ -5,10 +5,10 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-anchor_voting = "voteu2nY8DJ1v9AWV2Fsp3eBTPzy6btuaok4gBnvm15"
+anchor_scorekeeper = "voteu2nY8DJ1v9AWV2Fsp3eBTPzy6btuaok4gBnvm15"
 
 [programs.devnet]
-anchor_voting = "6xB7MvgYXXH3FFsrhvoJJu6QqxhLN1yLcUzTAnfnbEzS"
+anchor_scorekeeper = "6xB7MvgYXXH3FFsrhvoJJu6QqxhLN1yLcUzTAnfnbEzS"
 
 [registry]
 url = "https://api.apr.dev"
