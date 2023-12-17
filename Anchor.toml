@@ -5,14 +5,17 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-anchor_vote_program_sol_a = "voteu2nY8DJ1v9AWV2Fsp3eBTPzy6btuaok4gBnvm15"
+anchor_voting = "voteu2nY8DJ1v9AWV2Fsp3eBTPzy6btuaok4gBnvm15"
+
+[programs.devnet]
+anchor_voting = "6xB7MvgYXXH3FFsrhvoJJu6QqxhLN1yLcUzTAnfnbEzS"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
-wallet = "/Users/elon/.config/solana/id.json"
+cluster = "devnet"
+wallet = "/home/lyte/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

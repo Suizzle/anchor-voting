@@ -3,6 +3,8 @@ import { Program } from "@coral-xyz/anchor";
 import { AnchorVoteProgramSolA } from "../target/types/anchor_vote_program_sol_a";
 import { Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram } from "@solana/web3.js";
 import { createHash } from "crypto";
+import wallet from "../wba-wallet.json"
+
 
 describe("anchor-vote-program-sol-a", () => {
   // Configure the client to use the local cluster.
@@ -12,9 +14,9 @@ describe("anchor-vote-program-sol-a", () => {
 
   const provider = anchor.getProvider();
 
-  const signer = Keypair.generate();
+  const signer = Keypair.fromSecretKey(new Uint8Array(wallet));
 
-  const site = "google.com";
+  const site = "netscape.com";
 
   const hasher = createHash('sha256');
   hasher.update(Buffer.from(site));
@@ -42,7 +44,7 @@ describe("anchor-vote-program-sol-a", () => {
     .then(log)
   })
 
-  xit("Initialize", async () => {
+  it("Initialize", async () => {
     const tx = await program.methods
     .initialize(site)
     .accounts({
@@ -58,7 +60,7 @@ describe("anchor-vote-program-sol-a", () => {
     .then(log);
   });
 
-  xit("Upvote", async () => {
+  it("Upvote", async () => {
     const tx = await program.methods
     .upvote(site)
     .accounts({
@@ -74,7 +76,7 @@ describe("anchor-vote-program-sol-a", () => {
     .then(log);
   });
 
-  it("Downvote", async () => {
+  xit("Downvote", async () => {
     const tx = await program.methods
     .downvote(site)
     .accounts({

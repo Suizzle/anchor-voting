@@ -1,7 +1,10 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::hash::hash;
 
-declare_id!("voteu2nY8DJ1v9AWV2Fsp3eBTPzy6btuaok4gBnvm15");
+//declare_id!("B9EUJbE3DNXR3NxPULazqnVqKH9DUENhB4szirLzYpRd");
+declare_id!("6xB7MvgYXXH3FFsrhvoJJu6QqxhLN1yLcUzTAnfnbEzS");
+
+
 
 #[program]
 pub mod anchor_vote_program_sol_a {
